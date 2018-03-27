@@ -1,0 +1,75 @@
+﻿<Page x:Class="TripPinWpf.NuevaPersonaPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:TripPinWpf"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="NuevaPersonaPage">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200*"/>
+            <ColumnDefinition Width="200*"/>
+            <ColumnDefinition Width="151*"/>
+            <ColumnDefinition Width="249*"/>
+        </Grid.ColumnDefinitions>
+        <Label Content="Nombre de usuario" HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="26" Width="112"/>
+        <Label Content="Nombre" HorizontalAlignment="Right" VerticalAlignment="Bottom" Grid.Row="1" Height="26" Width="54"/>
+        <Label Content="Apellido" HorizontalAlignment="Right" VerticalAlignment="Bottom" Grid.Row="2" Height="26" Width="54"/>
+        <Label Content="Email" HorizontalAlignment="Right" VerticalAlignment="Bottom" RenderTransformOrigin="0.661,12.719" Grid.Column="2" Height="26" Margin="0" Width="38" Grid.Row="1"/>
+        <TextBox x:Name="txtNombreUsuario" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="5,0,0,0" TextWrapping="Wrap" VerticalAlignment="Bottom" Width="120" Validation.ErrorTemplate="{StaticResource errorValidacion}">
+            <TextBox.Text>
+                <Binding Path="UserName" UpdateSourceTrigger="PropertyChanged">
+                    <Binding.ValidationRules>
+                        <local:ValidacionTexto Largo="30"/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox.Text>
+        </TextBox>
+        <TextBox x:Name="txtNombre" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="5,0,0,0" TextWrapping="Wrap" VerticalAlignment="Bottom" Width="120" Grid.Row="1" Text="{Binding FirstName}"/>
+        <TextBox x:Name="txtApellido" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="5,0,0,0" TextWrapping="Wrap" VerticalAlignment="Bottom" Width="120" Grid.Row="2" Text="{Binding LastName}"/>
+        <Label Content="Direccion" HorizontalAlignment="Right" VerticalAlignment="Bottom" Grid.Row="4" Height="26" Margin="0" Width="59" RenderTransformOrigin="0.003,-0.192"/>
+        <Label Content="Ciudad" HorizontalAlignment="Right" Grid.Row="5" VerticalAlignment="Bottom" Height="26" Margin="0,0,0,55.8" Width="48" Grid.RowSpan="2"/>
+        <Label Content="Genero" HorizontalAlignment="Right" VerticalAlignment="Bottom" Grid.Row="3" Height="26" Width="48"/>
+        <TextBox x:Name="txtDireccion" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="5,0,0,0" TextWrapping="Wrap" VerticalAlignment="Bottom" Width="120" Grid.Row="4" Text="{Binding AddressInfo[0].Address}"/>
+        <ComboBox x:Name="cbGenero" Grid.Column="1" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Bottom" Width="120" Grid.Row="3" Height="22" ItemsSource="{Binding Source={StaticResource dataFromEnum}}" SelectedValue="{Binding Gender}"/>
+        <Button x:Name="btnGuardar" Content="Guardar" Grid.Column="3" HorizontalAlignment="Left" Margin="4.8,0,0,4.6" Grid.Row="7" VerticalAlignment="Bottom" Width="75" Padding="5" Click="btnGuardar_Click" Height="28">
+            <Button.Style>
+                <Style TargetType="{x:Type Button}">
+                    <Setter Property="IsEnabled" Value="false" />
+                    <Style.Triggers>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding ElementName=txtDescripcion, Path=(Validation.HasError)}" Value="false" />
+                            </MultiDataTrigger.Conditions>
+                            <Setter Property="IsEnabled" Value="true" />
+                        </MultiDataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+        </Button>
+        <ListBox x:Name="LbEmail" Grid.Column="3" HorizontalAlignment="Left" Margin="5.8,12,0,0" Grid.Row="2" Grid.RowSpan="2" VerticalAlignment="Top" Width="145" Height="100" ItemsSource="{Binding Emails}" SelectionChanged="LbEmail_SelectionChanged"/>
+        <TextBox x:Name="txtEmail" Grid.Column="3" HorizontalAlignment="Left" Height="23" Margin="5.8,0,0,0" TextWrapping="Wrap" VerticalAlignment="Bottom" Width="145" Grid.Row="1"/>
+        <Button x:Name="btnAgregarEmail" Content="Agregar" Grid.Column="3" HorizontalAlignment="Right" Margin="0,0,10,0" VerticalAlignment="Bottom" Width="75" Height="23" Grid.Row="1" Click="btnAgregarEmail_Click"/>
+        <Button x:Name="btnEditarEmail" Content="Editar" Grid.Column="3" HorizontalAlignment="Right" Margin="0,0,10,5" VerticalAlignment="Bottom" Width="75" Height="23" Grid.Row="2" IsEnabled="False" Click="btnEditarEmail_Click"/>
+        <Button x:Name="btnBorrarEmail" Content="Borrar" Grid.Column="3" HorizontalAlignment="Right" Margin="0,5,10,25" Grid.Row="3" Width="75" Click="btnBorrarEmail_Click" IsEnabled="False"/>
+        <TextBox x:Name="txtCiudad" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="5,0,0,55.8" Grid.Row="5" TextWrapping="Wrap" VerticalAlignment="Bottom" Width="120" Text="{Binding AddressInfo[0].City.Name}" Grid.RowSpan="2"/>
+        <Label Content="Provincia" HorizontalAlignment="Right" Grid.Row="6" VerticalAlignment="Bottom" Height="26" Margin="0,0,0,56.6" RenderTransformOrigin="0.221,0.585" Grid.RowSpan="2" Width="58"/>
+        <TextBox x:Name="txtProvincia" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="5,0,0,56.6" Grid.Row="6" TextWrapping="Wrap" VerticalAlignment="Bottom" Width="120" Text="{Binding AddressInfo[0].City.Region}" Grid.RowSpan="2"/>
+        <Label Content="Pais" HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="26" Grid.Column="2" Margin="0" Width="31" />
+        <TextBox x:Name="txtPais" Grid.Column="3" HorizontalAlignment="Left" Height="23" Margin="5.8,0,0,0" TextWrapping="Wrap" VerticalAlignment="Bottom" Width="145" Text="{Binding AddressInfo[0].City.CountryRegion}"/>
+
+
+    </Grid>
+</Page>

@@ -1,4 +1,6 @@
-﻿using System;
+﻿//using Microsoft.OData.Service.Sample.TrippinInMemory.Models;
+using Microsoft.OData.SampleService.Models.TripPin;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,7 +20,7 @@ namespace TripPinWpf
     /// <summary>
     /// Lógica de interacción para MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : NavigationWindow
     {
         public MainWindow()
         {
