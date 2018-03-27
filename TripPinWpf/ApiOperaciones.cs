@@ -1,5 +1,5 @@
 ﻿using Microsoft.OData.SampleService.Models.TripPin;
-using Microsoft.OData.Service.Sample.TrippinInMemory.Models;
+//using Microsoft.OData.Service.Sample.TrippinInMemory.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

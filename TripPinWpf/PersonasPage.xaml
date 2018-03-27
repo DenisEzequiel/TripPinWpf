@@ -27,7 +27,6 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTextColumn  Header="Edad" Binding="{Binding Age}" />
                 <DataGridTextColumn  Header="Direccion" Binding="{Binding AddressInfo[0].Address}" />
             </DataGrid.Columns>
         </DataGrid>
