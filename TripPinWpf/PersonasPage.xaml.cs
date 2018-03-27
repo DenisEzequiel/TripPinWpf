@@ -1,4 +1,5 @@
 ﻿using Microsoft.OData.SampleService.Models.TripPin;
+//using Microsoft.OData.Service.Sample.TrippinInMemory.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,7 +30,7 @@ namespace TripPinWpf
 
         private async void DataGridPersonas_Loaded(object sender, RoutedEventArgs e)
         {
-            dataGridPersonas.ItemsSource = await ApiOperaciones.Container.People.ExecuteAsync();
+            dataGridPersonas.ItemsSource = await ApiOperaciones.Container.People.GetAllPagesAsync();
             pbDataGridPersonas.Visibility = Visibility.Collapsed;
         }
 
@@ -44,12 +45,16 @@ namespace TripPinWpf
             {
                 NavigationService.Navigate(new NuevaPersonaPage((Person)dataGridPersonas.SelectedValue));
             }
-
         }
 
         private void btnBorrar_Click(object sender, RoutedEventArgs e)
         {
-
+            if (dataGridPersonas.SelectedIndex != -1)
+            {
+                ApiOperaciones.Container.DeleteObject(dataGridPersonas.SelectedValue);
+                ApiOperaciones.Container.SaveChanges();
+                DataGridPersonas_Loaded(null, null);
+            }
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

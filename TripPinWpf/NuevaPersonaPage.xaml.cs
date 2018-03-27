@@ -1,4 +1,5 @@
 ﻿using Microsoft.OData.SampleService.Models.TripPin;
+//using Microsoft.OData.Service.Sample.TrippinInMemory.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -22,37 +23,47 @@ namespace TripPinWpf
     /// </summary>
     public partial class NuevaPersonaPage : Page
     {
+        private enum ModoPage { Nuevo,Edicion};
+        private ModoPage modoPage;
         public NuevaPersonaPage()
         {
             InitializeComponent();
             ObservableCollection<Location> direcciones = new ObservableCollection<Location>();
-            direcciones.Add(new Location() { City = new City()});
-            DataContext = new Person() { AddressInfo = direcciones};
-            //ForzarValidacion();
-        }
+            direcciones.Add(new Location() { City = new City() });
+            //DataContext = new Person() { AddressInfo = direcciones };
+            modoPage = ModoPage.Nuevo;
 
-        //private void ForzarValidacion()
-        //{
-        //    foreach (FrameworkElement item in gridDatosPersonas.Children)
-        //    {
-        //        if (item is TextBox)
-        //        {
-        //            TextBox txt = item as TextBox;
-        //            txt.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
-        //        }
-        //    }
-        //}
+            Person p = Person.CreatePerson(null, null, null, 1);
+            p.AddressInfo = direcciones;
+            DataContext = p;
+        }
 
         public NuevaPersonaPage(Person person)
         {
             InitializeComponent();
             DataContext = person;
+            modoPage = ModoPage.Edicion;
         }
 
         private void btnGuardar_Click(object sender, RoutedEventArgs e)
         {
-            ApiOperaciones.Container.UpdateObject((Person)DataContext);
-            ApiOperaciones.Container.SaveChanges();
+            if (modoPage == ModoPage.Nuevo)
+            {
+                
+                ApiOperaciones.Container.AddToPeople((Person)DataContext);
+               
+            }
+            else
+            {
+                ApiOperaciones.Container.UpdateObject((Person)DataContext);
+            }
+
+            var response = ApiOperaciones.Container.SaveChanges();
+            foreach (var operationResponse in response)
+            {
+                Console.WriteLine(operationResponse.StatusCode);
+            }
+            NavigationService.GoBack();
         }
 
         private void btnBorrarEmail_Click(object sender, RoutedEventArgs e)

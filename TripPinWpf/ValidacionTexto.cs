@@ -30,11 +30,15 @@ namespace TripPinWpf
                 }
                 else if(ExpReg != null && !Regex.IsMatch(texto, ExpReg))
                 {
-                    return new ValidationResult(false,"El campo no tiene el formato requerido");
+                    
                 }
-
+                return ValidationResult.ValidResult;
             }
-            return ValidationResult.ValidResult;
+            else
+            {
+                return new ValidationResult(false, null);
+            }
+            
         }
     }
 }

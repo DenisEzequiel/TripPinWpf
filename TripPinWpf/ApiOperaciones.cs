@@ -10,9 +10,21 @@ namespace TripPinWpf
 {
     public class ApiOperaciones
     {
-        //public static Container Container { get; set; } = new Container(new Uri("http://services.odata.org/TripPinRESTierService/(S(dmhrqjuw30xcona4vkmri505))/"));
-        public static DefaultContainer Container { get; set; } = new DefaultContainer(new Uri("http://services.odata.org/v4/(S(lqbvtwide0ngdev54adgc0lu))/TripPinServiceRW/"));
+        //public static Container Container { get; set; } = new Container(new Uri("http://services.odata.org/TripPinRESTierService/(S(bl4qoxizginrb5uv0llomwkr))/"));
+        public static DefaultContainer Container
+        {
+            get
+            {
+                if (container == null)
+                {
+                    container = new DefaultContainer(new Uri("http://services.odata.org/v4/(S(lqbvtwide0ngdev54adgc0lu))/TripPinServiceRW/"));
+                }
+                return container;
+            }
+        }
+
+        private static DefaultContainer container;
     }
-    
+
 }
     
