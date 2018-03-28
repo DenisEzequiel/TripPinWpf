@@ -1,20 +1,9 @@
 ﻿using Microsoft.OData.SampleService.Models.TripPin;
-//using Microsoft.OData.Service.Sample.TrippinInMemory.Models;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace TripPinWpf
 {
@@ -30,12 +19,9 @@ namespace TripPinWpf
             InitializeComponent();
             ObservableCollection<Location> direcciones = new ObservableCollection<Location>();
             direcciones.Add(new Location() { City = new City() });
-            //DataContext = new Person() { AddressInfo = direcciones };
+            DataContext = new Person() { AddressInfo = direcciones };
             modoPage = ModoPage.Nuevo;
-
-            Person p = Person.CreatePerson(null, null, null, 1);
-            p.AddressInfo = direcciones;
-            DataContext = p;
+            Title = "Nueva Persona";
         }
 
         public NuevaPersonaPage(Person person)
@@ -43,26 +29,28 @@ namespace TripPinWpf
             InitializeComponent();
             DataContext = person;
             modoPage = ModoPage.Edicion;
+            Title = "Editar Persona";
         }
 
         private void btnGuardar_Click(object sender, RoutedEventArgs e)
         {
-            if (modoPage == ModoPage.Nuevo)
+            try
             {
-                
-                ApiOperaciones.Container.AddToPeople((Person)DataContext);
-               
+                if (modoPage == ModoPage.Nuevo)
+                {
+                    ApiOperaciones.Container.AddToPeople((Person)DataContext);
+                }
+                else
+                {
+                    ApiOperaciones.Container.UpdateObject((Person)DataContext);
+                }
+                ApiOperaciones.Container.SaveChanges();
             }
-            else
+            catch(Exception)
             {
-                ApiOperaciones.Container.UpdateObject((Person)DataContext);
+                MessageBox.Show("Ha ocurrido un error");
             }
 
-            var response = ApiOperaciones.Container.SaveChanges();
-            foreach (var operationResponse in response)
-            {
-                Console.WriteLine(operationResponse.StatusCode);
-            }
             NavigationService.GoBack();
         }
 
@@ -73,14 +61,7 @@ namespace TripPinWpf
 
         private void LbEmail_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            bool itemSeleccionado = LbEmail.SelectedIndex != -1;
-            btnBorrarEmail.IsEnabled = itemSeleccionado;
-            btnEditarEmail.IsEnabled = itemSeleccionado;
-        }
-
-        private void btnEditarEmail_Click(object sender, RoutedEventArgs e)
-        {
-            txtEmail.Text = (string)LbEmail.SelectedItem;
+            btnBorrarEmail.IsEnabled = LbEmail.SelectedIndex != -1;
         }
 
         private void btnAgregarEmail_Click(object sender, RoutedEventArgs e)
@@ -91,7 +72,7 @@ namespace TripPinWpf
 
         private void txtEmail_TextChanged(object sender, TextChangedEventArgs e)
         {
-            ValidacionTexto validacion = new ValidacionTexto() { LargoMaximo = 30, Requerido = false, ExpReg = @"^\S+@\S+$" };
+            ValidacionTexto validacion = new ValidacionTexto() { LargoMaximo = 30, Requerido = false, ExpReg = @"\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*" };
             btnAgregarEmail.IsEnabled = validacion.Validate(txtEmail.Text,null).IsValid;
         }
     }

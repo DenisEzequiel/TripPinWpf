@@ -30,7 +30,7 @@ namespace TripPinWpf
                 }
                 else if(ExpReg != null && !Regex.IsMatch(texto, ExpReg))
                 {
-                    
+                    return new ValidationResult(false,null);
                 }
                 return ValidationResult.ValidResult;
             }
